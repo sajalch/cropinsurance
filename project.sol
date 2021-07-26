@@ -1,7 +1,7 @@
 pragma solidity 0.6.0;
 
 contract cropInsurance {
-    
+    uint public idx = 0; 
     function stringToBytes32(string memory source) private pure returns (bytes32 result) {
         assembly {
             result := mload(add(source, 32))
@@ -11,13 +11,22 @@ contract cropInsurance {
     function compare(string memory a, string memory b) private view returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
     }
+    //for Admin
+    function validateAdminLogin(string memory userId, string memory password) public view returns(string memory){
+        if(compare("admin@gmail.com", userId) && compare("admin", password))
+            return userId;
+        return "";
+    }
     
+    //for User
     struct User{
         string userId;
         string password;
         string passwordHintMessage;
     }
     mapping(bytes32=>User) private userMap;
+    mapping(uint=>string) public enrolledUsers;
+ 
     function addNewUser(string memory userId, string memory password, string memory passwordHintMessage) public returns(bool){
         bytes32 key = stringToBytes32(userId);
         if(compare(userMap[key].userId,"")){
@@ -62,6 +71,7 @@ contract cropInsurance {
         bool isPremiumPaid;
         uint govtSubsidyAmount;
         uint insuredAmount;
+        string claim;
     }
     
     mapping (bytes32 => FarmerDetails) private farmerMap;
@@ -117,7 +127,8 @@ contract cropInsurance {
             uint premiumPerYear = premiumVal;
             uint govtSubsidyAmount = subsidyVal;
             
-            
+            enrolledUsers[idx] = userId;
+            idx+=1;
             
             farmerMap[key].name = name;
             farmerMap[key].fatherName = fatherName;
@@ -134,6 +145,7 @@ contract cropInsurance {
             farmerMap[key].isPremiumPaid= false;
             farmerMap[key].govtSubsidyAmount= govtSubsidyAmount;
             farmerMap[key].insuredAmount= 0;  
+            farmerMap[key].claim ="";
             return true;
         }
         return false;
@@ -174,14 +186,16 @@ contract cropInsurance {
             uint premiumPerYear,
             bool isPremiumPaid,
             uint govtSubsidyAmount,
-            uint insuredAmount
+            uint insuredAmount,
+            string memory claim
         ){
             bytes32 key = stringToBytes32(userId);
             return(
                 farmerMap[key].premiumPerYear,
                 farmerMap[key].isPremiumPaid,
                 farmerMap[key].govtSubsidyAmount,
-                farmerMap[key].insuredAmount);
+                farmerMap[key].insuredAmount,
+                farmerMap[key].claim);
         }
         
     function payInsuredAmount(string memory userId, uint premimumAmount) public payable returns(bool){
@@ -191,5 +205,31 @@ contract cropInsurance {
             farmerMap[key].isPremiumPaid = true;
         }
         return farmerMap[key].isPremiumPaid;
+    }
+    
+    function claimInsuredAmount(string memory userId) public payable returns(bool){
+        bytes32 key = stringToBytes32(userId);
+        if(compare(farmerMap[key].claim,"")){
+            farmerMap[key].claim = "pending";
+        }
+        return compare(farmerMap[key].claim,"pending");
+    }
+    
+    //For Admin
+    function getFarmerClaimDetails(string memory userId) public view 
+    returns(
+        string memory name,
+        string memory id,
+        string memory claim
+    ){
+        bytes32 key = stringToBytes32(userId);
+        return (farmerMap[key].name, userId, farmerMap[key].claim);
+    }
+    function grantClaimInsuredAmount(string memory userId,string memory claim) public payable returns(bool){
+        bytes32 key = stringToBytes32(userId);
+        if(compare(farmerMap[key].claim,"pending")){
+            farmerMap[key].claim = claim;
+        }
+        return compare(farmerMap[key].claim,claim);
     }
 }
