@@ -56,7 +56,10 @@ const App=async ()=>{
                     <p>Premium Paid Status: <span>${data.isPremiumPaid?`Paid`:`To be Paid`}</span></p>
                     ${data.isPremiumPaid?`<p>If anything goes wrong with the crops you'll recieve <span >Rs. ${data.insuredAmount}</span>, 
                     you can claim and a team will verify, once verified you'll recieve the amount in the bank.
-                     You can contact us in case of any queries.</p><button >Claim Now</button>`:`
+                     You can contact us in case of any queries.</p>
+                     ${data.claim?'<span>Claim Status: '+ data.claim+'</span>':`<button onclick="claimInsuredAmount()">Claim Now</button>`}
+                     `                     
+                     :`
                     <button onclick="payInsuredAmount()">Pay Now</button>
                     `}
                 </div>`;
@@ -187,7 +190,17 @@ const App=async ()=>{
           }).catch(err=>alert('Some error occured',err));
           return status;
         }
-        
+        function claimInsuredAmount(){
+          if(confirm("Are you sure you want to claim now?")){
+          let status = false;
+          contract.methods.claimInsuredAmount(user).send({from:account}).then(data=>{
+            status = !!data;
+            alert('Claim Raised Successfully!');
+            getInsuranceDetails();
+          }).catch(err=>alert('Some error occured',err));
+          return status;
+         }
+        }
         
         getProfile();
 
@@ -195,6 +208,7 @@ const App=async ()=>{
         window.getCropLandDetails=getCropLandDetails;
         window.getInsuranceDetails=getInsuranceDetails;
         window.payInsuredAmount=payInsuredAmount;
+        window.claimInsuredAmount = claimInsuredAmount;
         window.passwordManage=passwordManage;
         window.changeUserPass=changeUserPass;
         window.addFarmerDetails = addFarmerDetails;

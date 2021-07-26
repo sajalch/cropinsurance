@@ -1,0 +1,9 @@
+
+<script type='module'>
+    import {getCookie} from "./js/utils.mjs"
+    if(getCookie('admin')){
+        window.location.href= "dashboard.html";
+    }else{
+        window.location.href= "auth.html";
+    }
+</script>

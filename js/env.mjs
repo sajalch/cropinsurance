@@ -1,4 +1,4 @@
-export const transactionHash = "0x5c29aa4a623a65fc3ee7ae2b8aac504a88b1ae0b30236c24554cc5d7340f2843";
+export const transactionHash = "0x7c41e9a3e9e36c8e2eb2ded9a139a4408c9d17ec26a6e80b482d77a0f42026c2";
 export const abi = [
 	{
 		"inputs": [
@@ -138,14 +138,9 @@ export const abi = [
 				"internalType": "string",
 				"name": "userId",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "premimumAmount",
-				"type": "uint256"
 			}
 		],
-		"name": "payInsuredAmount",
+		"name": "claimInsuredAmount",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -154,6 +149,25 @@ export const abi = [
 			}
 		],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "enrolledUsers",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -184,6 +198,35 @@ export const abi = [
 			{
 				"internalType": "string",
 				"name": "cropSeason",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "userId",
+				"type": "string"
+			}
+		],
+		"name": "getFarmerClaimDetails",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "claim",
 				"type": "string"
 			}
 		],
@@ -268,6 +311,11 @@ export const abi = [
 				"internalType": "uint256",
 				"name": "insuredAmount",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "claim",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -282,6 +330,91 @@ export const abi = [
 			}
 		],
 		"name": "getUser",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "userId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "claim",
+				"type": "string"
+			}
+		],
+		"name": "grantClaimInsuredAmount",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "idx",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "userId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "premimumAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "payInsuredAmount",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "userId",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "password",
+				"type": "string"
+			}
+		],
+		"name": "validateAdminLogin",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -316,4 +449,4 @@ export const abi = [
 		"stateMutability": "view",
 		"type": "function"
 	}
-];
+]
