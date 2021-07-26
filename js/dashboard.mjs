@@ -181,14 +181,15 @@ const App=async ()=>{
         }
 
         function payInsuredAmount(){
-          const ethAccount = prompt('Enter the Etherium Account').trim().toLowerCase();
-          let status = false;
-          contract.methods.payInsuredAmount(user,premimumAmount).send({from:ethAccount}).then(data=>{
-            status = !!data;
-            alert('Congrats, Payment Successfull');
-            getInsuranceDetails();
-          }).catch(err=>alert('Some error occured',err));
-          return status;
+          if(confirm("Are you Sure you want to pay?")){
+            let status = false;
+            contract.methods.payInsuredAmount(user,premimumAmount).send({from:account}).then(data=>{
+              status = !!data;
+              alert('Congrats, Payment Successfull');
+              getInsuranceDetails();
+            }).catch(err=>alert('Some error occured',err));
+            return status;
+         }
         }
         function claimInsuredAmount(){
           if(confirm("Are you sure you want to claim now?")){
